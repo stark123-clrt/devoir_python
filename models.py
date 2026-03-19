@@ -104,3 +104,42 @@ class Utilisateur:
     def __str__(self):
         nb = len(self.livres_empruntes)
         return f"Utilisateur: {self.nom} ({nb} emprunt(s))"
+
+
+class Bibliotheque:
+    """Gère la collection de livres."""
+
+    def __init__(self, nom):
+        self.nom = nom
+        self.livres = []
+
+    def ajouter_livre(self, livre):
+        self.livres.append(livre)
+        print(f"Livre '{livre.titre}' ajouté à la bibliothèque.")
+
+    def supprimer_livre(self, id_livre):
+        for i, livre in enumerate(self.livres):
+            if livre.id == id_livre:
+                self.livres.pop(i)
+                print(f"Livre ID {id_livre} supprimé.")
+                return
+        print("Livre introuvable.")
+
+    def rechercher_livre(self, terme):
+        terme = terme.lower()
+        resultats = [
+            l for l in self.livres
+            if terme in l.titre.lower() or terme in l.auteur.lower()
+        ]
+        return resultats
+
+    def afficher_livres(self):
+        if not self.livres:
+            print("Aucun livre dans la bibliothèque.")
+            return
+        print(f"\n=== {self.nom} — {len(self.livres)} livre(s) ===")
+        for livre in self.livres:
+            print(f"  {livre}")
+
+    def __str__(self):
+        return f"Bibliothèque '{self.nom}' ({len(self.livres)} livres)"
