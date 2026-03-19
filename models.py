@@ -73,3 +73,34 @@ class Ebook(Livre):
 
     def type_livre(self):
         return f"Ebook ({self.format_fichier})"
+
+
+class Utilisateur:
+    """Représente un membre de la bibliothèque."""
+
+    def __init__(self, nom):
+        self.nom = nom
+        self.livres_empruntes = []
+
+    def emprunter_livre(self, livre):
+        if livre.emprunter():
+            self.livres_empruntes.append(livre)
+
+    def retourner_livre(self, livre):
+        if livre in self.livres_empruntes:
+            if livre.retourner():
+                self.livres_empruntes.remove(livre)
+        else:
+            print(f"{self.nom} n'a pas emprunté '{livre.titre}'.")
+
+    def afficher_emprunts(self):
+        if not self.livres_empruntes:
+            print(f"{self.nom} n'a aucun emprunt en cours.")
+        else:
+            print(f"Emprunts de {self.nom} :")
+            for livre in self.livres_empruntes:
+                print(f"  - {livre}")
+
+    def __str__(self):
+        nb = len(self.livres_empruntes)
+        return f"Utilisateur: {self.nom} ({nb} emprunt(s))"
