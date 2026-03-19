@@ -30,6 +30,38 @@ def afficher_livres():
         print(f"{livre['id']:<5} {livre['titre']:<30} {livre['auteur']:<25} {dispo}")
 
 
+def rechercher_livre():
+    terme = input("Rechercher (titre ou auteur) : ").strip().lower()
+    resultats = [
+        l for l in livres
+        if terme in l["titre"].lower() or terme in l["auteur"].lower()
+    ]
+    if not resultats:
+        print("Aucun livre trouvé.")
+    else:
+        print(f"\n{len(resultats)} résultat(s) :")
+        for livre in resultats:
+            dispo = "Oui" if livre["disponible"] else "Non"
+            print(f"  [{livre['id']}] {livre['titre']} — {livre['auteur']} (Disponible: {dispo})")
+
+
+def supprimer_livre():
+    afficher_livres()
+    if not livres:
+        return
+    try:
+        id_cible = int(input("ID du livre à supprimer : "))
+    except ValueError:
+        print("ID invalide.")
+        return
+    for i, livre in enumerate(livres):
+        if livre["id"] == id_cible:
+            livres.pop(i)
+            print(f"Livre ID {id_cible} supprimé.")
+            return
+    print("Livre introuvable.")
+
+
 def menu():
     print("\n=== Bibliothèque ===")
     print("1. Ajouter un livre")
